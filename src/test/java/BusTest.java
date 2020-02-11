@@ -8,12 +8,22 @@ public class BusTest {
     private Bus bus;
     private Person person1;
     private Person person2;
+    private Person person3;
+    private Person person4;
+    private BusStop busStop;
 
     @Before
     public void before(){
         bus = new Bus("Balerno", 3);
         person1 = new Person();
         person2 = new Person();
+        person3 = new Person();
+        person4 = new Person();
+        busStop = new BusStop("Balerno");
+        busStop.addPersonToQueue(person1);
+        busStop.addPersonToQueue(person2);
+        busStop.addPersonToQueue(person3);
+        busStop.addPersonToQueue(person4);
     }
 
     @Test
@@ -42,4 +52,22 @@ public class BusTest {
         bus.addPassenger(person2);
         assertEquals(person1, bus.removePassenger(person1));
     }
+
+    @Test
+    public void can_pickup_person_from_bus_stop(){
+        bus.pickUpPassenger(busStop, person1);
+        assertEquals(1, bus.getPassengerCount());
+        assertEquals(3, busStop.getQueueLength());
+    }
+
+    @Test
+    public void cannot_pickup_person_if_over_capacity(){
+        bus.pickUpPassenger(busStop, person1);
+        bus.pickUpPassenger(busStop, person2);
+        bus.pickUpPassenger(busStop, person3);
+        bus.pickUpPassenger(busStop, person4);
+        assertEquals(3, bus.getPassengerCount());
+        assertEquals(1, busStop.getQueueLength());
+    }
+
 }

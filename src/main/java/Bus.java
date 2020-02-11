@@ -26,4 +26,11 @@ public class Bus {
         int index = this.passengers.indexOf(person);
         return this.passengers.remove(index);
     }
+
+    public void pickUpPassenger(BusStop busStop, Person person) {
+        if (this.getPassengerCount() < this.capacity) {
+            Person personToPickup = busStop.removePerson(person);
+            this.passengers.add(personToPickup);
+        }
+    }
 }
